@@ -1,0 +1,9 @@
+discord.py
+yt-dlp
+PyNaCl
+asyncio
+ffmpeg-python
+googlesearch-python
+tawpy
+pyjokes
+beautifulsoup4
