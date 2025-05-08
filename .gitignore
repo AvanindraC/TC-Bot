@@ -1,2 +1,19 @@
-touch .gitignore
-echo ".env" >> .gitignore
+
+Thumbs.db
+.DS_Store
+
+
+.env
+.env.*
+
+
+logs
+*.log
+
+
+
+__pycache__/
+*.pyc
+
+
+.vscode/
