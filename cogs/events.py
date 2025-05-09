@@ -7,9 +7,27 @@ class ServerEvents(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
+    
         welcome_channel = member.guild.get_channel(1369382044119076895)
         if welcome_channel:
             await welcome_channel.send(f"Welcome {member.mention} to {member.guild.name}!")
+
+
+        try:
+            embed = discord.Embed(
+                title="👋 Welcome to the Server!",
+                description=(
+                    f"Hey {member.display_name}, welcome to **{member.guild.name}**! 🎉\n\n"
+                "We're glad to have you here. Feel free to explore the channels, ask questions, "
+                "and get involved in the community!\n\n"
+                "If you need help, just mention a moderator or use `/help` to see available commands."
+                ),
+                color=discord.Color.green()
+        )
+            embed.set_footer(text="Enjoy your stay!")
+            await member.send(embed=embed)
+        except discord.Forbidden:
+            pass
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -17,15 +35,15 @@ class ServerEvents(commands.Cog):
         
         if message.content.strip() == f"<@{self.bot.user.id}>":
             embed = discord.Embed(
-                title="👋 Hello! I'm TC-Bot",
-                description="I'm here to help moderate your server and manage roles.\n\nHere are some commands you can try:",
-                color=discord.Color.blue()
-            )
-            embed.add_field(name="/hello", value="Say hi to the bot!", inline=False)
-            embed.add_field(name="/kick", value="Kick a member (if you have permissions)", inline=False)
-            embed.add_field(name="/ban", value="Ban a member (if you have permissions)", inline=False)
-            embed.add_field(name="/timeout", value="Timeout a member temporarily", inline=False)
-            embed.add_field(name="/purge", value="Delete recent messages", inline=False)
+            title="👋 Hello! I'm TC-Bot",
+            description="Here are my available commands:",
+            color=discord.Color.blue()
+        )
+
+            commands = await self.bot.tree.fetch_commands()
+            for cmd in commands:
+                embed.add_field(name=f"/{cmd.name}", value=cmd.description or "No description", inline=False)
+
             await message.channel.send(embed=embed)
 
                 

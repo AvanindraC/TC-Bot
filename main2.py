@@ -39,7 +39,9 @@ initial_extensions = [
     "cogs.roles",
     "cogs.events",
     #"cogs.music",
-    "cogs.misc"
+    "cogs.misc",
+    "cogs.embed",
+    "cogs.modmail"
 ]
 
 async def main():
