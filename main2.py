@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 import asyncio
+from keep_alive import keep_alive
 
 
 asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
@@ -41,7 +42,9 @@ initial_extensions = [
     #"cogs.music",
     "cogs.misc",
     "cogs.embed",
-    "cogs.modmail"
+    "cogs.modmail",
+    #"cogs.rules",
+    
 ]
 
 async def main():
@@ -53,5 +56,5 @@ async def main():
             except Exception as e:
                 print(f"Failed to load {ext}: {e}")
         await bot.start(TOKEN)
-
+keep_alive()
 asyncio.run(main())

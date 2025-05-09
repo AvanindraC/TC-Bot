@@ -1,15 +1,42 @@
 from discord.ext import commands
 import discord
 
-
-role_message_id = 1369628936648265799
+role_message_id = 1370292122594443344
 emoji_to_role = {
-    discord.PartialEmoji(name='👍'): 1369364351382982757,
+    discord.PartialEmoji(name='✅'): 1369364351382982757,  
 }
 
 class RoleManager(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.checked_once = False  
+
+    @commands.Cog.listener()
+    async def on_ready(self):
+        if self.checked_once:
+            return
+        self.checked_once = True
+
+        for guild in self.bot.guilds:
+            channel = discord.utils.get(guild.text_channels, id=11369382280283295875)  
+            if not channel:
+                continue
+
+            try:
+                message = await channel.fetch_message(role_message_id)
+            except discord.NotFound:
+                continue
+
+            for reaction in message.reactions:
+                if reaction.emoji in emoji_to_role:
+                    role = guild.get_role(emoji_to_role[reaction.emoji])
+                    users = await reaction.users().flatten()
+                    for user in users:
+                        if user.bot:
+                            continue
+                        member = guild.get_member(user.id) or await guild.fetch_member(user.id)
+                        if role and role not in member.roles:
+                            await member.add_roles(role)
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
@@ -47,4 +74,3 @@ class RoleManager(commands.Cog):
 
 async def setup(bot):
     await bot.add_cog(RoleManager(bot))
-
