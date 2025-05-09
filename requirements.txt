@@ -7,3 +7,5 @@ googlesearch-python
 tawpy
 pyjokes
 beautifulsoup4
+threading
+Flask
